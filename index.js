@@ -1,5 +1,8 @@
+require('dotenv').config()
 const express = require('express')
+const mongoose = require('mongoose')
 const app = express()
+const Person = require('./models/person')
 
 const morgan = require('morgan')
 app.use(express.json())
@@ -64,7 +67,9 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+    Person.find({}).then(persons => {
+        response.json(persons)
+    })
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -92,24 +97,35 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-    const idMath = Math.floor(Math.random() * 1000)
-    const id = idMath.toString()
-    const person = request.body
+    // const idMath = Math.floor(Math.random() * 1000)
+    // const id = idMath.toString()
+    const body = request.body
 
-    if (!person.name || !person.number) {
+    if (!body.name || !body.number) {
         return response.status(400).json({
             error: 'Content missing'
         })
     }
 
-    if (persons.find((per) => per.name == person.name)) {
-        return response.status(400).json({
-            error: 'Name already exists'
-        })
-    }
-    person.id = id
-    persons = persons.concat(person)
-    response.json(person)
+    // if (persons.find((per) => per.name == person.name)) {
+    //     return response.status(400).json({
+    //         error: 'Name already exists'
+    //     })
+    // }
+
+    const person = new Person({
+        name: body.name,
+        number: body.number
+    })
+
+    person.save().then(
+        savedPerson => {
+            response.json(savedPerson)
+        }
+    )
+    // person.id = id
+    // persons = persons.concat(person)
+    // response.json(person)
 })
 
 // alkup. versio ennen PaaS-hommia
