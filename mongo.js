@@ -6,10 +6,6 @@ const mongoose = require('mongoose')
 //     console.log(`${index}: ${val}`);
 // });
 
-// Launching the Node.js process as:
-
-// node process - args.js one two = three four
-
 if (process.argv.length < 3) {
     console.log('give at least password as argument')
     process.exit(1)
@@ -18,6 +14,7 @@ if (process.argv.length < 3) {
 const password = process.argv[2]
 const name = process.argv[3]
 const number = process.argv[4]
+
 const url =
     `mongodb+srv://StinaSoile:${password}@fullstack-course-cluste.ixcnawg.mongodb.net/personApp?retryWrites=true&w=majority&appName=fullstack-course-cluster1`
 
