@@ -1,6 +1,6 @@
 require('dotenv').config()
 const express = require('express')
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 const app = express()
 const Person = require('./models/person')
 
@@ -24,7 +24,7 @@ const cors = require('cors')
 const person = require('./models/person')
 app.use(cors())
 // app.use(morgan('tiny'))
-morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
+morgan.token('body', function (req) { return JSON.stringify(req.body) })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 
@@ -40,7 +40,7 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/info', (request, response, next) => {
-    person.countDocuments({}, { hint: "_id_" }).then(result => {
+    person.countDocuments({}, { hint: '_id_' }).then(result => {
         const currDate = new Date().toString()
         response.send(
             '<p>Phonebook has info for ' + result + ' people</p><br/> <p>' + currDate + '</p>')
